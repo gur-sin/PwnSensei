@@ -9,17 +9,16 @@ import (
 func parsePGN(pgn string) ([]string, error) {
 	reader := strings.NewReader(pgn)
 
-	readGame, err := chess.PGN(pgnReader)
-	
+	readGame, err := chess.PGN(reader)
 	if err != nil {
 		return nil, err
 	}
-	
-	game := chess.NewGame(pgn)
 
-	moves = game.Moves()
+	game := chess.NewGame(readGame)
+
+	moves := game.Moves()
 	moveList := make([]string, len(moves))
-	for i, move := range {
+	for i, move := range moves {
 		moveList[i] = move.String()
 	}
 

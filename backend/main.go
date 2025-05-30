@@ -28,7 +28,7 @@ func main() {
 
 	r.POST("/analyze", func(c *gin.Context) {
 		// This will handle the pgn data apparently.
-		var req PGNRequest
+		var req AnalyzeRequest
 
 		err := c.ShouldBindJSON(&req)
 		if err != nil {
