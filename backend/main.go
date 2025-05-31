@@ -11,10 +11,6 @@ type AnalyzeRequest struct {
 	PGN string `json:"pgn"`
 }
 
-type analyzeResponse struct {
-	Moves string `json:"moves"`
-}
-
 // Read and parse PGN, extract the moves and return the list of moves to the frontend
 
 func main() {
@@ -36,7 +32,7 @@ func main() {
 			return
 		}
 
-		moves, err := parsePGN(req.PGN)
+		moves, err := ParsePGN(req.PGN)
 		if err != nil {
 			c.JSON(400, gin.H{"error": "Error in the PGN parsing function"})
 		}

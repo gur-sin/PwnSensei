@@ -6,7 +6,7 @@ import (
 	"github.com/notnil/chess"
 )
 
-func parsePGN(pgn string) ([]string, error) {
+func ParsePGN(pgn string) ([]string, error) {
 	reader := strings.NewReader(pgn)
 
 	readGame, err := chess.PGN(reader)
