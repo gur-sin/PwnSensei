@@ -1,4 +1,4 @@
-package main
+package pgn
 
 import (
 	"strings"
