@@ -3,7 +3,7 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/gur-sin/PwnSensei/internal/pgn"
+	"github.com/gur-sin/PwnSensei/backend/internal/pgn"
 
 	"github.com/gin-gonic/gin"
 )
