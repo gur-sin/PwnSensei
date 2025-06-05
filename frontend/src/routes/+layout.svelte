@@ -5,5 +5,3 @@
 </script>
 
 {@render children()}
-
-export const ssr = false; export const prerender = false;
