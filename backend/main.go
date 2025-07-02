@@ -15,6 +15,8 @@ import (
 func main() {
 	r := gin.Default()
 
+	r.Use(middleware.CORSMiddleware())
+
 	api := r.Group("/api")
 
 	api.GET("/ping", func(c *gin.Context) {
@@ -25,7 +27,9 @@ func main() {
 
 	api.POST("/analyze", handlers.Analyze())
 
-	r.Use(middleware.CORSMiddleware())
+	r.NoRoute(func(c *gin.Context) {
+		c.JSON(404, gin.H{"message": "Not Found", "requested_path": c.Request.URL.Path})
+	})
 
 	if err := r.Run(":8080"); err != nil {
 		log.Fatal(err)
