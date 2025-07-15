@@ -1,5 +1,47 @@
 <script>
+	import 'chessground/assets/chessground.cburnett.css';
+	import 'chessground/assets/chessground.base.css';
+	import 'chessground/assets/chessground.brown.css';
+
+	import { onMount } from 'svelte';
+	import { Chessground } from 'chessground';
+	import { Chess } from 'chess.js';
+
 	let pgn = '';
+	let chess = new Chess();
+
+	let allMoves = [];
+	let currentMove = 0;
+
+	/** @type {string[]} */
+	let moves = [];
+
+	function loadPgnOnClick() {
+		chess.reset();
+
+		const pgnClean = pgn.trim();
+		const moveRegex = /\d+\.\s*([^\s]+)\s+([^\s]+)/g;
+		let match;
+
+		while ((match = moveRegex.exec(pgnClean)) !== null) {
+			const whiteMove = match[1];
+			const blackMove = match[2];
+
+			try {
+				chess.move(whiteMove);
+				chess.move(blackMove);
+			} catch (error) {
+				console.error('Invalid move:', error);
+				break;
+			}
+		}
+
+		const finalFen = chess.fen();
+		ground.set({ fen: finalFen });
+
+		allMoves = chess.history();
+		currentMove = allMoves.length;
+	}
 
 	async function handleSubmit() {
 		const url = 'http://localhost:8080/api/analyze';
@@ -14,12 +56,30 @@
 			}
 
 			const json = await response.json();
-			console.log(json);
+			moves = json.moves;
 		} catch (error) {
 			console.error('Error: ', error);
 		}
 	}
+
+	// @ts-ignore
+	let boardElement;
+	// @ts-ignore
+	let ground;
+
+	onMount(() => {
+		// @ts-ignore
+		ground = Chessground(boardElement, {
+			orientation: 'white',
+			fen: 'start',
+			movable: {
+				free: false
+			}
+		});
+	});
 </script>
+
+<div bind:this={boardElement} class="chessground wood h-[400px] w-[400px]"></div>
 
 <div class="text">
 	<textarea bind:value={pgn}></textarea>
@@ -28,6 +88,17 @@
 <div>
 	<button on:click={handleSubmit}> Click to fetch </button>
 </div>
+
+<div>
+	<button on:click={loadPgnOnClick}> load pgn </button>
+</div>
+
+<h1>Move list</h1>
+<ul>
+	{#each moves as move, index}
+		<li>{index + 1}. {move}</li>
+	{/each}
+</ul>
 
 <style>
 	textarea {
