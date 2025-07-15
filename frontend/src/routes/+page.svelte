@@ -20,6 +20,8 @@
 		chess.reset();
 
 		const pgnClean = pgn.trim();
+
+		// The regex extracts one full move as an array. [0] -> Move no., [1] -> white's move, [2] -> black's move.
 		const moveRegex = /\d+\.\s*([^\s]+)\s+([^\s]+)/g;
 		let match;
 
@@ -37,13 +39,14 @@
 		}
 
 		const finalFen = chess.fen();
+		// @ts-ignore
 		ground.set({ fen: finalFen });
 
 		allMoves = chess.history();
 		currentMove = allMoves.length;
 	}
 
-	async function handleSubmit() {
+	async function stockfishRequest() {
 		const url = 'http://localhost:8080/api/analyze';
 		try {
 			console.log('Submitting PGN:', pgn);
@@ -64,6 +67,7 @@
 
 	// @ts-ignore
 	let boardElement;
+
 	// @ts-ignore
 	let ground;
 
@@ -86,7 +90,7 @@
 </div>
 
 <div>
-	<button on:click={handleSubmit}> Click to fetch </button>
+	<button on:click={stockfishRequest}> Click to fetch </button>
 </div>
 
 <div>
