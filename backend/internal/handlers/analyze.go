@@ -27,6 +27,7 @@ func Analyze() gin.HandlerFunc {
 		moves, err := pgn.ParsePGN(req.PGN)
 		if err != nil {
 			c.JSON(400, gin.H{"error": "Error in the PGN parsing function"})
+			return
 		}
 
 		c.JSON(http.StatusOK, gin.H{
