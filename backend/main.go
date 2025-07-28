@@ -27,6 +27,10 @@ func main() {
 
 	api.POST("/analyze", handlers.Analyze())
 
+	api.POST("/analyze/commentary", handlers.HandleLLMCommentary)
+
+	api.POST("/generate", handlers.HandleGenerate())
+
 	r.NoRoute(func(c *gin.Context) {
 		c.JSON(404, gin.H{"message": "Not Found", "requested_path": c.Request.URL.Path})
 	})

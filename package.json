@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@react-chess/chessground": "^1.3.4"
+  }
+}
