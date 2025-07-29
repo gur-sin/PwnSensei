@@ -1,7 +1,10 @@
 package services
 
 import (
+<<<<<<< HEAD
 	"fmt"
+=======
+>>>>>>> a5b014d (Doing some backend work)
 	"github.com/notnil/chess"
 	"strings"
 )
@@ -10,6 +13,7 @@ type MoveEvaluation struct {
 	Move      string `json:"move"`
 	BestReply string `json:"best_reply"`
 	FEN       string `json:"fen"`
+<<<<<<< HEAD
 	ScoreCP   *int   `json:"score_cp,omitempty"` // nil if mate
 	Mate      *int   `json:"mate,omitempty"`
 }
@@ -18,6 +22,8 @@ type StockfishEval struct {
 	BestMove string `json:"best_move"`
 	ScoreCP  *int   `json:"score_cp,omitempty"` // nil if mate
 	Mate     *int   `json:"mate,omitempty"`     // nil if centipawn
+=======
+>>>>>>> a5b014d (Doing some backend work)
 }
 
 func EvaluatePGNWithStockfish(pgnStr string) ([]MoveEvaluation, error) {
@@ -33,6 +39,7 @@ func EvaluatePGNWithStockfish(pgnStr string) ([]MoveEvaluation, error) {
 	evaluations := []MoveEvaluation{}
 	game = chess.NewGame() // Start fresh to play moves one by one
 
+<<<<<<< HEAD
 	for i := 0; i < len(moves); i++ {
 		move := moves[i]
 		game.Move(move)
@@ -45,11 +52,30 @@ func EvaluatePGNWithStockfish(pgnStr string) ([]MoveEvaluation, error) {
 			FEN:       fen,
 			ScoreCP:   eval.ScoreCP,
 			Mate:      eval.Mate,
+=======
+	for _, move := range moves {
+		game.Move(move)
+		fen := game.Position().String()
+		bestmoveLine := AnalyzeWithStockfish(fen)
+
+		// Parse the bestmove from line (e.g., "bestmove e5" -> e5)
+		bestReply := ""
+		parts := strings.Split(bestmoveLine, " ")
+		if len(parts) >= 2 {
+			bestReply = parts[1]
+		}
+
+		evaluations = append(evaluations, MoveEvaluation{
+			Move:      move.String(),
+			BestReply: bestReply,
+			FEN:       fen,
+>>>>>>> a5b014d (Doing some backend work)
 		})
 	}
 
 	return evaluations, nil
 }
+<<<<<<< HEAD
 
 func FormatForLLM(evaluations []MoveEvaluation) string {
 	var sb strings.Builder
@@ -78,3 +104,5 @@ func FormatForLLM(evaluations []MoveEvaluation) string {
 
 	return sb.String()
 }
+=======
+>>>>>>> a5b014d (Doing some backend work)

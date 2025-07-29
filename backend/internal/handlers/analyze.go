@@ -3,6 +3,11 @@ package handlers
 import (
 	"net/http"
 
+<<<<<<< HEAD
+=======
+	"github.com/gur-sin/PwnSensei/backend/services/evaluator.go"
+
+>>>>>>> a5b014d (Doing some backend work)
 	"github.com/gin-gonic/gin"
 	"github.com/gur-sin/PwnSensei/backend/services"
 )
@@ -30,5 +35,9 @@ func Analyze() gin.HandlerFunc {
 		c.JSON(http.StatusOK, gin.H{
 			"evaluations": evals,
 		})
+<<<<<<< HEAD
+=======
+		c.Next()
+>>>>>>> a5b014d (Doing some backend work)
 	}
 }
