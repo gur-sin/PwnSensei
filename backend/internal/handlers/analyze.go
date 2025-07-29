@@ -3,7 +3,7 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/gur-sin/PwnSensei/backend/internal/pgn"
+	"github.com/gur-sin/PwnSensei/backend/services/evaluator.go"
 
 	"github.com/gin-gonic/gin"
 )
@@ -24,16 +24,15 @@ func Analyze() gin.HandlerFunc {
 			return
 		}
 
-		moves, err := pgn.ParsePGN(req.PGN)
+		evals, err := services.EvaluatePGNWithStockfish(req.PGN)
 		if err != nil {
-			c.JSON(400, gin.H{"error": "Error in the PGN parsing function"})
+			c.JSON(400, gin.H{"error": "Error during PGN evaluation", "details": err.Error()})
 			return
 		}
 
 		c.JSON(http.StatusOK, gin.H{
-			"moves": moves,
+			"evaluations": evals,
 		})
-
 		c.Next()
 	}
 }
