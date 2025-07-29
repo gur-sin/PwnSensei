@@ -2,9 +2,13 @@ package services
 
 import (
 <<<<<<< HEAD
+<<<<<<< HEAD
 	"fmt"
 =======
 >>>>>>> a5b014d (Doing some backend work)
+=======
+	"fmt"
+>>>>>>> 627bad0 (Wait is the pipeline already done?)
 	"github.com/notnil/chess"
 	"strings"
 )
@@ -14,6 +18,9 @@ type MoveEvaluation struct {
 	BestReply string `json:"best_reply"`
 	FEN       string `json:"fen"`
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 627bad0 (Wait is the pipeline already done?)
 	ScoreCP   *int   `json:"score_cp,omitempty"` // nil if mate
 	Mate      *int   `json:"mate,omitempty"`
 }
@@ -22,8 +29,11 @@ type StockfishEval struct {
 	BestMove string `json:"best_move"`
 	ScoreCP  *int   `json:"score_cp,omitempty"` // nil if mate
 	Mate     *int   `json:"mate,omitempty"`     // nil if centipawn
+<<<<<<< HEAD
 =======
 >>>>>>> a5b014d (Doing some backend work)
+=======
+>>>>>>> 627bad0 (Wait is the pipeline already done?)
 }
 
 func EvaluatePGNWithStockfish(pgnStr string) ([]MoveEvaluation, error) {
@@ -40,6 +50,7 @@ func EvaluatePGNWithStockfish(pgnStr string) ([]MoveEvaluation, error) {
 	game = chess.NewGame() // Start fresh to play moves one by one
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	for i := 0; i < len(moves); i++ {
 		move := moves[i]
 		game.Move(move)
@@ -54,28 +65,33 @@ func EvaluatePGNWithStockfish(pgnStr string) ([]MoveEvaluation, error) {
 			Mate:      eval.Mate,
 =======
 	for _, move := range moves {
+=======
+	for i := 0; i < len(moves); i++ {
+		move := moves[i]
+>>>>>>> 627bad0 (Wait is the pipeline already done?)
 		game.Move(move)
 		fen := game.Position().String()
-		bestmoveLine := AnalyzeWithStockfish(fen)
-
-		// Parse the bestmove from line (e.g., "bestmove e5" -> e5)
-		bestReply := ""
-		parts := strings.Split(bestmoveLine, " ")
-		if len(parts) >= 2 {
-			bestReply = parts[1]
-		}
+		eval := AnalyzeWithStockfish(fen)
 
 		evaluations = append(evaluations, MoveEvaluation{
 			Move:      move.String(),
-			BestReply: bestReply,
+			BestReply: eval.BestMove,
 			FEN:       fen,
+<<<<<<< HEAD
 >>>>>>> a5b014d (Doing some backend work)
+=======
+			ScoreCP:   eval.ScoreCP,
+			Mate:      eval.Mate,
+>>>>>>> 627bad0 (Wait is the pipeline already done?)
 		})
 	}
 
 	return evaluations, nil
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 627bad0 (Wait is the pipeline already done?)
 
 func FormatForLLM(evaluations []MoveEvaluation) string {
 	var sb strings.Builder
@@ -104,5 +120,8 @@ func FormatForLLM(evaluations []MoveEvaluation) string {
 
 	return sb.String()
 }
+<<<<<<< HEAD
 =======
 >>>>>>> a5b014d (Doing some backend work)
+=======
+>>>>>>> 627bad0 (Wait is the pipeline already done?)
