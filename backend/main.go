@@ -27,7 +27,13 @@ func main() {
 
 	api.POST("/analyze", handlers.Analyze())
 
+<<<<<<< HEAD
 	api.POST("/analyze/commentary", handleLLMCommentary)
+=======
+	api.POST("/analyze/commentary", handlers.HandleLLMCommentary)
+
+	api.POST("/generate", handlers.HandleGenerate())
+>>>>>>> 6c80619 (parent 28de4bb86f3cc43b87effbafe551f14edf353ba1)
 
 	r.NoRoute(func(c *gin.Context) {
 		c.JSON(404, gin.H{"message": "Not Found", "requested_path": c.Request.URL.Path})
