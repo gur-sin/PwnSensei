@@ -1,2 +1,5 @@
 # Stockfish
-engines/
+backend/engines/
+
+# Env
+.env
