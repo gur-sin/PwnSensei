@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -45,7 +46,26 @@ func HandleGenerate() gin.HandlerFunc {
 		}
 
 		// Ask LLM
-		commentary, err := llm.GenerateCommentary(apiKey, req.Prompt, evals)
+		var evalStrings []string
+		for _, e := range evals {
+			var score string
+			if e.ScoreCP != nil {
+				score = fmt.Sprintf("%d cp", *e.ScoreCP)
+			} else if e.Mate != nil {
+				score = fmt.Sprintf("mate in %d", *e.Mate)
+			} else {
+				score = "unknown"
+			}
+
+			evalStrings = append(evalStrings, fmt.Sprintf(
+				"%s → Best reply: %s | Score: %s",
+				e.Move, e.BestReply, score,
+			))
+		}
+
+		// Now call the LLM with readable text instead of structs
+		commentary, err := llm.GenerateCommentary(apiKey, req.Prompt, evalStrings)
+
 		if err != nil {
 			log.Println("LLM error:", err)
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "LLM generation failed", "details": err.Error()})

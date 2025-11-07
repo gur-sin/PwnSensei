@@ -3,14 +3,6 @@ package handlers
 import (
 	"net/http"
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-	"github.com/gur-sin/PwnSensei/backend/services/evaluator.go"
-
->>>>>>> a5b014d (Doing some backend work)
-=======
->>>>>>> 627bad0 (Wait is the pipeline already done?)
 	"github.com/gin-gonic/gin"
 	"github.com/gur-sin/PwnSensei/backend/services"
 )
@@ -38,12 +30,5 @@ func Analyze() gin.HandlerFunc {
 		c.JSON(http.StatusOK, gin.H{
 			"evaluations": evals,
 		})
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-		c.Next()
->>>>>>> a5b014d (Doing some backend work)
-=======
->>>>>>> 627bad0 (Wait is the pipeline already done?)
 	}
 }
