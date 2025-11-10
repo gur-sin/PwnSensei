@@ -1,0 +1,1 @@
+self.__REACT_LOADABLE_MANIFEST="{\"components/chess-board.tsx -> chess.js\":{\"id\":\"components/chess-board.tsx -> chess.js\",\"files\":[\"static/chunks/_app-pages-browser_node_modules_chess_js_dist_esm_chess_js.js\"]}}"

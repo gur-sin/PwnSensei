@@ -37,15 +37,15 @@ func HandleGenerate() gin.HandlerFunc {
 		}
 		log.Println("Stockfish returned", len(evals), "evaluations")
 
-		// Get API key
-		apiKey := os.Getenv("GROQ_API_KEY")
+		// Get Gemini API key
+		apiKey := os.Getenv("GEMINI_API_KEY")
 		if apiKey == "" {
-			log.Println("Missing GROQ_API_KEY in environment")
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Server misconfigured: missing GROQ_API_KEY"})
+			log.Println("Missing GEMINI_API_KEY in environment")
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Server misconfigured: missing GEMINI_API_KEY"})
 			return
 		}
 
-		// Ask LLM
+		// Format Stockfish evals into human-readable text
 		var evalStrings []string
 		for _, e := range evals {
 			var score string
@@ -56,23 +56,21 @@ func HandleGenerate() gin.HandlerFunc {
 			} else {
 				score = "unknown"
 			}
-
 			evalStrings = append(evalStrings, fmt.Sprintf(
 				"%s → Best reply: %s | Score: %s",
 				e.Move, e.BestReply, score,
 			))
 		}
 
-		// Now call the LLM with readable text instead of structs
+		// Ask Gemini for commentary
 		commentary, err := llm.GenerateCommentary(apiKey, req.Prompt, evalStrings)
-
 		if err != nil {
-			log.Println("LLM error:", err)
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "LLM generation failed", "details": err.Error()})
+			log.Println("Gemini LLM error:", err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Gemini generation failed", "details": err.Error()})
 			return
 		}
 
-		log.Println("LLM returned commentary")
+		log.Println("Gemini returned commentary")
 
 		c.JSON(http.StatusOK, gin.H{
 			"evaluations": evals,

@@ -1,3 +1,76 @@
+# Frontend (Next.js)
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/.pnpm-debug.log*
+frontend/*.tsbuildinfo
+frontend/next-env.d.ts
+frontend/.vercel
+
+# Backend (Go)
+backend/bin/
+backend/obj/
+backend/.DS_Store
+backend/*.exe
+backend/*.exe~
+backend/*.dll
+backend/*.so
+backend/*.dylib
+backend/*.test
+backend/*.out
+backend/dist/
+backend/vendor/
+
+# Go
+*.go~
+go.sum
+go.mod.local
+
+# IDE & Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+.env
+.env.local
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Build artifacts
+build/
+dist/
+*.o
+*.a
+*.so
+
+# Logs
+logs/
+*.log
+log.txt
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
 # Stockfish
 backend/engines/
 

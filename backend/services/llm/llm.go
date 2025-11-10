@@ -7,26 +7,30 @@ import (
 	"net/http"
 )
 
-// Response struct for parsing Groq response
-type groqResponse struct {
-	Choices []struct {
-		Message struct {
-			Content string `json:"content"`
-		} `json:"message"`
-	} `json:"choices"`
+type geminiResponse struct {
+	Candidates []struct {
+		Content struct {
+			Parts []struct {
+				Text string `json:"text"`
+			} `json:"parts"`
+		} `json:"content"`
+	} `json:"candidates"`
 }
 
 func GenerateCommentary(apiKey, prompt string, evals []string) (string, error) {
-	url := "https://api.groq.com/openai/v1/chat/completions"
+	url := "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" + apiKey
 
-	// Build the full prompt
 	fullPrompt := fmt.Sprintf("%s\nStockfish analysis:\n%s", prompt, evals)
 
 	payload := map[string]interface{}{
-		"model": "llama3-8b-8192", // example, you can change
-		"messages": []map[string]string{
-			{"role": "system", "content": "You are a chess coach."},
-			{"role": "user", "content": fullPrompt},
+		"contents": []map[string]interface{}{
+			{
+				"role": "user",
+				"parts": []map[string]string{
+					{"text": "You are a chess coach. Analyze the game and provide insightful commentary."},
+					{"text": fullPrompt},
+				},
+			},
 		},
 	}
 
@@ -34,22 +38,24 @@ func GenerateCommentary(apiKey, prompt string, evals []string) (string, error) {
 
 	req, _ := http.NewRequest("POST", url, bytes.NewBuffer(body))
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", "Bearer "+apiKey)
 
 	client := &http.Client{}
 	res, err := client.Do(req)
 	if err != nil {
 		return "", err
 	}
+	fmt.Println("Gemini raw response:", string(body))
 	defer res.Body.Close()
 
-	var groqRes groqResponse
-	if err := json.NewDecoder(res.Body).Decode(&groqRes); err != nil {
+	var gemRes geminiResponse
+	if err := json.NewDecoder(res.Body).Decode(&gemRes); err != nil {
 		return "", err
 	}
 
-	if len(groqRes.Choices) > 0 {
-		return groqRes.Choices[0].Message.Content, nil
+	if len(gemRes.Candidates) > 0 &&
+		len(gemRes.Candidates[0].Content.Parts) > 0 {
+		return gemRes.Candidates[0].Content.Parts[0].Text, nil
 	}
+
 	return "", fmt.Errorf("no commentary returned")
 }

@@ -3,16 +3,28 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gur-sin/PwnSensei/backend/internal/handlers"
 	"github.com/gur-sin/PwnSensei/backend/internal/middleware"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 // Read and parse PGN, extract the moves and return the list of moves to the frontend
 
 func main() {
+	_ = godotenv.Load()
+
+	if err := godotenv.Load(); err != nil {
+		log.Println("Warning: .env file not found or failed to load")
+	}
+
+	if os.Getenv("GEMINI_API_KEY") == "" {
+		log.Println("Warning: GEMINI_API_KEY is missing from environment")
+	}
+
 	r := gin.Default()
 
 	r.Use(middleware.CORSMiddleware())
